@@ -1,7 +1,11 @@
 class Solution {
 public:
     bool isPowerOfTwo(int n) {
-        // n must be positive, and n & (n - 1) must kill the only set bit to become 0
-        return n > 0 && (n & (n - 1)) == 0;
+        if (n <= 0) return false;
+        
+        while (n % 2 == 0) {
+            n /= 2;
+        }
+        return n == 1;
     }
 };
