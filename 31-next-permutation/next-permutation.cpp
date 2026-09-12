@@ -1,42 +1,30 @@
 class Solution {
 public:
     void nextPermutation(vector<int>& nums) {
-        int n = nums.size() - 1; // Start index at the end
-        
-        // 1. Tera while loop: Right se left aakar dip (breakpoint) dhundna
-        while (n > 0) {
-            if (nums[n] <= nums[n - 1]) {
-                n--;
-            } else {
-                break;
-            }
-        }
-        n--; // Ab 'n' tere dip element ka index ban gaya hai
+        int n = nums.size();
+        int i = n - 2;
 
-        // 2. Tera 'b' aur 'temp' wala difference logic
-        if (n >= 0) {
-            int b = nums[n]; // Tera breakpoint
-            int temp = 10000000; 
-            int swap_idx = -1;
-
-            // Pura right-side scan karke b se JUST bada number (minimum diff) dhundna
-            for (int i = n + 1; i < nums.size(); i++) {
-                if (nums[i] > b && nums[i] <= temp) {
-                    temp = nums[i];
-                    swap_idx = i;
-                }
-            }
-            swap(nums[n], nums[swap_idx]);
+        // Step 1: Right se left jaake pehla dip dhundo
+        while (i >= 0 && nums[i] >= nums[i + 1]) {
+            i--;
         }
 
-        // 3. Tera incomplete two-pointer reverse logic
-        int left = n + 1;  
-        int right = nums.size() - 1; 
+        // Step 2: Agar dip mila, toh right se JUST bada element dhund ke swap karo
+        if (i >= 0) {
+            int j = n - 1;
+            while (nums[j] <= nums[i]) {
+                j--;
+            }
+            swap(nums[i], nums[j]);
+        }
 
+        // Step 3: Two pointers se suffix ko reverse karo (Tere paper ka final step)
+        int left = i + 1;
+        int right = n - 1;
         while (left < right) {
             swap(nums[left], nums[right]);
-            left++;  
-            right--; 
+            left++;
+            right--;
         }
     }
 };
